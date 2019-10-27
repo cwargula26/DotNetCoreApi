@@ -31,12 +31,12 @@ namespace Phoenix
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddTransient<IEmployeeRepo, EmployeeJsonRepo>();
-            services.AddTransient<ICustomerRepo, CustomerJsonRepo>();
-            services.AddTransient<IOrderRepo, OrderJsonRepo>();
-            services.AddTransient<IEmployeeService, EmployeeService>();
-            services.AddTransient<ICustomerService, CustomerService>();
-            services.AddTransient<IOrderService, OrderService>();
+            services.AddSingleton<IEmployeeRepo, EmployeeJsonRepo>();
+            services.AddSingleton<ICustomerRepo, CustomerJsonRepo>();
+            services.AddSingleton<IOrderRepo, OrderJsonRepo>();
+            services.AddSingleton<IEmployeeService, EmployeeService>();
+            services.AddSingleton<ICustomerService, CustomerService>();
+            services.AddSingleton<IOrderService, OrderService>();
             services.AddScoped<PheonixAuthFilter>();
         }
 
