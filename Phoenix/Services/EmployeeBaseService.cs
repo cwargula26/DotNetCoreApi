@@ -15,10 +15,10 @@ namespace Phoenix.Services
         {
             _employeeRepo = employeeRepo;
         }
-        public async virtual void Create(Employee employee)
+        public async virtual Task Create(Employee employee)
         {
             // Save to Repo first
-            _employeeRepo.Create(employee);
+            await _employeeRepo.Create(employee);
         }
 
         public async virtual Task<IEnumerable<Employee>> GetAllByCompanyId(Guid companyId)

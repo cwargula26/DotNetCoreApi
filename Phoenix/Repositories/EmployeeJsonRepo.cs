@@ -16,8 +16,11 @@ namespace Phoenix.Repositories
         public EmployeeJsonRepo()
         {
             // Open JSON File of Employees and load them into memory
-            var employeeJson = File.ReadAllText(_employeeFilePath);
-            _employees = JsonSerializer.Deserialize<IEnumerable<Employee>>(employeeJson);
+            if(File.Exists(_employeeFilePath))
+            {
+                var employeeJson = File.ReadAllText(_employeeFilePath);
+                _employees = JsonSerializer.Deserialize<IEnumerable<Employee>>(employeeJson);
+            }
         }
 
         ~EmployeeJsonRepo()
@@ -28,11 +31,15 @@ namespace Phoenix.Repositories
 
         public async Task<IEnumerable<Employee>> Get(System.Guid id)
         {
-            return _employees.Where(e => e.Id == id);
+            return _employees?.Where(e => e.Id == id);
         }
 
-        public async void Create(Employee employee)
+        public async Task Create(Employee employee)
         {
+            if(_employees == null)
+            {
+                _employees = new List<Employee>();
+            }
             _employees.Append(employee);
         }
         

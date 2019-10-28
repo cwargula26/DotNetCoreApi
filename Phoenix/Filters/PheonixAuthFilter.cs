@@ -24,7 +24,7 @@ namespace Phoenix.Filters
                 context.Result = new BadRequestObjectResult(context.ModelState);
             }
 
-            var companyId = "24124";
+            var companyId = "12345678-1234-1234-1234-123456789012";
 
             // Attach the company id along with the request
             // TODO: is there a better way? I'm adding to both the header and query string so that binding will pick it up either place

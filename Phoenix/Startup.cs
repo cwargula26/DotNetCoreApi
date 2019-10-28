@@ -38,6 +38,10 @@ namespace Phoenix
             services.AddSingleton<ICustomerService, CustomerService>();
             services.AddSingleton<IOrderService, OrderService>();
             services.AddScoped<PheonixAuthFilter>();
+            services.AddHttpClient();
+            
+            var appSettings = Configuration.GetSection("AppSettings");
+            services.Configure<AppSettings>(appSettings);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
