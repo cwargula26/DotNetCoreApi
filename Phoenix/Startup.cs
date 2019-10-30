@@ -15,6 +15,7 @@ using Phoenix.Leviathan.Services;
 using Phoenix.Filters;
 using Phoenix.Repositories.Interfaces;
 using Phoenix.Repositories;
+using AutoMapper;
 
 namespace Phoenix
 {
@@ -31,6 +32,7 @@ namespace Phoenix
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddAutoMapper(typeof(Startup));
             services.AddSingleton<IEmployeeRepo, EmployeeJsonRepo>();
             services.AddSingleton<ICustomerRepo, CustomerJsonRepo>();
             services.AddSingleton<IOrderRepo, OrderJsonRepo>();

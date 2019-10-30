@@ -8,6 +8,9 @@ using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
 using Microsoft.Extensions.Options;
+using AutoMapper;
+using Phoenix.Leviathan.Models;
+using System.Text;
 
 namespace Phoenix.Leviathan.Services
 {
@@ -17,36 +20,40 @@ namespace Phoenix.Leviathan.Services
         private IHttpClientFactory _clientFactory;
         private AppSettings _appSettings;
         private string _employeeUrl;
+        private readonly IMapper _mapper;
 
-        public EmployeeService(IEmployeeRepo employeeRepo, IHttpClientFactory clientFactory, IOptions<AppSettings> appSettings) : base(employeeRepo)
+        public EmployeeService(IEmployeeRepo employeeRepo, IHttpClientFactory clientFactory, IOptions<AppSettings> appSettings, IMapper mapper) : base(employeeRepo)
         {
             _clientFactory = clientFactory;
             _appSettings = appSettings.Value;
             _employeeUrl = _appSettings.LeviathanUrl + _employeePath;
+            _mapper = mapper;
         }
 
         public async override Task Create(Employee employee)
         {
             base.Create(employee);
 
-            // var request = new HttpRequestMessage(HttpMethod.Post, _employeeUrl);
-            // request.
+            var createEmp = _mapper.Map<CreateEmployeeModel>(employee);
+            var createEmpJson = JsonSerializer.Serialize(createEmp);
 
-            // var client = _clientFactory.CreateClient();
-            // var response = await client.PostAsync(_employeeUrl, new StringContent(jsonInString, Encoding.UTF8, "application/json"));
+            var request = new HttpRequestMessage(HttpMethod.Post, _employeeUrl);
 
-            // if (response.IsSuccessStatusCode)
-            // {
-            //     var emplyeeJson = await response.Content.ReadAsStringAsync();
+            var client = _clientFactory.CreateClient();
+            var response = await client.PostAsync(_employeeUrl, new StringContent(createEmpJson, Encoding.UTF8, "application/json"));
+
+            if (response.IsSuccessStatusCode)
+            {
+                var emplyeeJson = await response.Content.ReadAsStringAsync();
                 
-            //     // TODO: Determine which employee collection to return
-            //     return JsonSerializer.Deserialize<IEnumerable<Employee>>(emplyeeJson);
-            // }
-            // else
-            // {
-            //     // TODO: Error handling
-            //     throw new Exception();
-            // }        
+                // TODO: Determine which employee collection to return
+                //return await JsonSerializer.Deserialize<IEnumerable<Employee>>(emplyeeJson);
+            }
+            else
+            {
+                // TODO: Error handling
+                throw new Exception();
+            }        
 
         }
 
