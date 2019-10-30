@@ -42,17 +42,9 @@ namespace Phoenix.Leviathan.Services
             var client = _clientFactory.CreateClient();
             var response = await client.PostAsync(_employeeUrl, new StringContent(createEmpJson, Encoding.UTF8, "application/json"));
 
-            if (response.IsSuccessStatusCode)
-            {
-                var emplyeeJson = await response.Content.ReadAsStringAsync();
-                
-                // TODO: Determine which employee collection to return
-                //return await JsonSerializer.Deserialize<IEnumerable<Employee>>(emplyeeJson);
-            }
-            else
+            if (!response.IsSuccessStatusCode)
             {
                 // TODO: Error handling
-                throw new Exception();
             }        
 
         }
@@ -66,20 +58,30 @@ namespace Phoenix.Leviathan.Services
             var request = new HttpRequestMessage(HttpMethod.Get, url);
 
             var client = _clientFactory.CreateClient();
-            var response = await client.SendAsync(request);
+            
+            try
+            {
+                var response = await client.SendAsync(request);
 
-            if (response.IsSuccessStatusCode)
-            {
-                var emplyeeJson = await response.Content.ReadAsStringAsync();
-                
-                // TODO: Determine which employee collection to return
-                return JsonSerializer.Deserialize<IEnumerable<Employee>>(emplyeeJson);
+                if (response.IsSuccessStatusCode)
+                {
+                    var emplyeeJson = await response.Content.ReadAsStringAsync();
+                    
+                    // TODO: Determine which employee collection to return
+                    // TODO: Need to update local repo from remote source
+                    return JsonSerializer.Deserialize<IEnumerable<Employee>>(emplyeeJson);
+                }
+                else
+                {
+                    // TODO: Error handling
+                    return repoEmployees;
+                }        
             }
-            else
+            catch(Exception ex)
             {
-                // TODO: Error handling
-                throw new Exception();
-            }        
+                // TODO: Error Handling
+                return repoEmployees;
+            }
         }
     }
 }
