@@ -10,8 +10,8 @@ namespace Phoenix.Repositories
 {
     public class EmployeeJsonRepo : IEmployeeRepo
     {
-        private IEnumerable<Employee> _employees;
-        private const string _employeeFilePath = "./employees.json";
+        private List<Employee> _employees;
+        private const string _employeeFilePath = @"C:\temp\employees.json";
 
         public EmployeeJsonRepo()
         {
@@ -19,14 +19,8 @@ namespace Phoenix.Repositories
             if(File.Exists(_employeeFilePath))
             {
                 var employeeJson = File.ReadAllText(_employeeFilePath);
-                _employees = JsonSerializer.Deserialize<IEnumerable<Employee>>(employeeJson);
+                _employees = JsonSerializer.Deserialize<List<Employee>>(employeeJson);
             }
-        }
-
-        ~EmployeeJsonRepo()
-        {
-            // Write to file on destruction
-            File.WriteAllText(_employeeFilePath, JsonSerializer.Serialize(_employees));
         }
 
         public async Task<IEnumerable<Employee>> Get(System.Guid id)
@@ -40,8 +34,8 @@ namespace Phoenix.Repositories
             {
                 _employees = new List<Employee>();
             }
-            _employees.Append(employee);
-        }
-        
+            _employees.Add(employee);
+            await File.WriteAllTextAsync(_employeeFilePath, JsonSerializer.Serialize(_employees));
+        }        
     }
 }

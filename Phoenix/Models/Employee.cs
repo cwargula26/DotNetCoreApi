@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Phoenix.Models
 {
-    public class Employee
+    public class Employee : BaseModel
     {
         public System.Guid Id { get; }
 

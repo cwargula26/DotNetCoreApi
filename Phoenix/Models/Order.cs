@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Phoenix.Models
 {
-    public class Order
+    public class Order : BaseModel
     {
         [Required]
         public string CustomerId { get; set; }
