@@ -17,9 +17,11 @@ namespace Phoenix.Leviathan.Services
     public class CustomerService : CustomerBaseService
     {
         private const string _customerPath = "customer";
+        private const string _customerGetPath = "get-all";
         private IHttpClientFactory _clientFactory;
         private AppSettings _appSettings;
         private string _customerUrl;
+        private string _customerGetUrl;
         private readonly IMapper _mapper;
 
         public CustomerService(ICustomerRepo customerRepo, IHttpClientFactory clientFactory, IOptions<AppSettings> appSettings, IMapper mapper) : base(customerRepo)
@@ -27,6 +29,7 @@ namespace Phoenix.Leviathan.Services
             _clientFactory = clientFactory;
             _appSettings = appSettings.Value;
             _customerUrl = _appSettings.LeviathanUrl + _customerPath;
+            _customerGetUrl = string.Format("{0}/{1}", _customerUrl, _customerGetPath);
             _mapper = mapper;
         }
 
@@ -52,9 +55,38 @@ namespace Phoenix.Leviathan.Services
             }
         }
 
-        public override IEnumerable<Customer> GetAll(Guid companyId)
+        public async override Task<IEnumerable<Customer>> GetAll(Guid companyId)
         {
-            throw new System.NotImplementedException();
+            var repoCustomers = await base.GetAll(companyId);
+
+            try
+            {
+                var url = string.Format("{0}?ApiUser={1}&ApiKey={2}", _customerGetUrl, _appSettings.LeviathanApiUser, _appSettings.LeviathanApiKey);
+                var request = new HttpRequestMessage(HttpMethod.Get, url);
+
+                var client = _clientFactory.CreateClient();
+                var response = await client.SendAsync(request);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var customerJson = await response.Content.ReadAsStringAsync();
+                    
+                    // TODO: Determine which employee collection to return
+                    // TODO: Need to update local repo from remote source
+                    var customers = JsonSerializer.Deserialize<IEnumerable<LeviathanEmployeeModel>>(customerJson);
+                    return _mapper.Map<IEnumerable<Customer>>(customers);
+                }
+                else
+                {
+                    // TODO: Error handling
+                    return repoCustomers;
+                }        
+            }
+            catch(Exception ex)
+            {
+                // TODO: Error Handling
+                return repoCustomers;
+            }
         }
     }
 }

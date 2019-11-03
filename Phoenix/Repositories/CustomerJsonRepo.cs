@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.IO;
 using System.Text.Json;
+using System.Linq;
 
 namespace Phoenix.Repositories
 {
@@ -21,9 +22,9 @@ namespace Phoenix.Repositories
                 _customers = JsonSerializer.Deserialize<List<Customer>>(customerJson);
             }
         }
-        public IEnumerable<Customer> GetAllByCompanyId(System.Guid companyId)
+        public async Task<IEnumerable<Customer>> GetAllByCompanyId(System.Guid companyId)
         {
-            throw new System.NotImplementedException();
+            return _customers?.Where(cust => cust.CompanyId == companyId);
         }
 
         public async Task Create(Customer customer)

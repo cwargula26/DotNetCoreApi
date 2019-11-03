@@ -8,8 +8,7 @@ namespace Phoenix.Leviathan.MappingProfiles
     {
         public DomainProfile()
         {
-            // CreateMap<Employee, LeviathanEmployeeModel>()
-            //     .ForMember(dest => dest.telephone, opt => opt.MapFrom(src => src.PhoneNumber))
+            // Employee Map
             CreateMap<LeviathanEmployeeModel, Employee>()
                 .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.email))
                 .ForMember(dest => dest.FirstName, opt => opt.MapFrom(src => src.firstName))
@@ -19,6 +18,7 @@ namespace Phoenix.Leviathan.MappingProfiles
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
                 .ReverseMap();
 
+            // Customer Map
             CreateMap<LeviathanCustomerModel, Customer>()
                 .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.name))
                 .ForMember(dest => dest.Address, opt => opt.MapFrom(src => src.Address))

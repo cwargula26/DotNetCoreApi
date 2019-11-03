@@ -21,10 +21,10 @@ namespace Phoenix.Services
             await _customerRepo.Create(customer);
         }
 
-        public virtual IEnumerable<Customer> GetAll(Guid companyId)
+        public async virtual Task<IEnumerable<Customer>> GetAll(Guid companyId)
         {
             // Get employee from repo
-            return _customerRepo.GetAllByCompanyId(companyId);
+            return await _customerRepo.GetAllByCompanyId(companyId);
         }
     }
 }

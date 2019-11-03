@@ -7,7 +7,7 @@ namespace Phoenix.Services.Interfaces
 {
     public interface ICustomerService
     {
-        IEnumerable<Customer> GetAll(Guid companyId);
+        Task<IEnumerable<Customer>> GetAll(Guid companyId);
 
         Task Create(Customer customer);
         
