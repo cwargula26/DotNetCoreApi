@@ -25,6 +25,7 @@ namespace Phoenix.Repositories
 
         public async Task<IEnumerable<Employee>> GetAllByCompanyId(System.Guid companyId)
         {
+            // TODO: Left this as async because if this were pulling from an actual DB I'd await that method
             return _employees?.Where(e => e.CompanyId == companyId);
         }
 

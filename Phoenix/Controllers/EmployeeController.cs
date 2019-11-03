@@ -32,10 +32,10 @@ namespace Phoenix.Controllers
         }
 
         [HttpPost]
-        public void Post(Employee employee)
+        public async Task Post(Employee employee)
         {
             employee.CompanyId = new Guid(this.Request.Headers["CompanyId"]);
-            _service.Create(employee);
+            await _service.Create(employee);
         }
     }
 }

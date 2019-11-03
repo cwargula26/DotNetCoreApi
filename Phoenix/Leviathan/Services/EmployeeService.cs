@@ -31,7 +31,7 @@ namespace Phoenix.Leviathan.Services
 
         public async override Task Create(Employee employee)
         {
-            base.Create(employee);
+            await base.Create(employee);
 
             var createEmp = _mapper.Map<LeviathanEmployeeModel>(employee);
             var createEmpJson = JsonSerializer.Serialize(createEmp);
