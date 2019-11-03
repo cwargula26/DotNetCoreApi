@@ -41,10 +41,14 @@ namespace Phoenix.Leviathan.Services
             var client = _clientFactory.CreateClient();
             var response = await client.PostAsync(_employeeUrl, new StringContent(createEmpJson, Encoding.UTF8, "application/json"));
 
-            if (!response.IsSuccessStatusCode)
+            if (response.IsSuccessStatusCode)
+            {
+                // TODO: Update local version to represent that it's beens synced
+            }        
+            else
             {
                 // TODO: Error handling
-            }        
+            }
 
         }
 
