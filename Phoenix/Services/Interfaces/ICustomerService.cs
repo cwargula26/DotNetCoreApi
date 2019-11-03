@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System;
 using Phoenix.Models;
+using System.Threading.Tasks;
 
 namespace Phoenix.Services.Interfaces
 {
@@ -8,7 +9,7 @@ namespace Phoenix.Services.Interfaces
     {
         IEnumerable<Customer> GetAll(Guid companyId);
 
-        void Create(Customer customer);
+        Task Create(Customer customer);
         
     }
 }

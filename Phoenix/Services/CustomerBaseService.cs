@@ -3,6 +3,7 @@ using Phoenix.Models;
 using System.Collections.Generic;
 using Phoenix.Repositories.Interfaces;
 using System;
+using System.Threading.Tasks;
 
 namespace Phoenix.Services
 {
@@ -14,10 +15,10 @@ namespace Phoenix.Services
         {
             _customerRepo = customerRepo;
         }
-        public virtual void Create(Customer customer)
+        public async virtual Task Create(Customer customer)
         {
             // Save to Repo first
-            _customerRepo.Create(customer);
+            await _customerRepo.Create(customer);
         }
 
         public virtual IEnumerable<Customer> GetAll(Guid companyId)

@@ -20,6 +20,5 @@ namespace Phoenix.Models
 
         [Required]
         public string Email { get; set; }
-        public System.Guid CompanyId { get; set; }
     }
 }
