@@ -24,7 +24,7 @@ namespace Phoenix.Services
         public async virtual Task<IEnumerable<Employee>> GetAllByCompanyId(Guid companyId)
         {
             // Get employee from repo
-            return await _employeeRepo.Get(companyId);
+            return await _employeeRepo.GetAllByCompanyId(companyId);
         }
     }
 }

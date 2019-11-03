@@ -8,6 +8,6 @@ namespace Phoenix.Repositories.Interfaces
     {
         Task Create(Employee emp);
 
-        Task<IEnumerable<Employee>> Get(System.Guid companyId);
+        Task<IEnumerable<Employee>> GetAllByCompanyId(System.Guid companyId);
     }
 }

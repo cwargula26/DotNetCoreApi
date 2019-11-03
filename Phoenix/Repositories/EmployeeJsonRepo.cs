@@ -23,9 +23,9 @@ namespace Phoenix.Repositories
             }
         }
 
-        public async Task<IEnumerable<Employee>> Get(System.Guid id)
+        public async Task<IEnumerable<Employee>> GetAllByCompanyId(System.Guid companyId)
         {
-            return _employees?.Where(e => e.Id == id);
+            return _employees?.Where(e => e.CompanyId == companyId);
         }
 
         public async Task Create(Employee employee)

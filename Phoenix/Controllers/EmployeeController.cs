@@ -25,16 +25,17 @@ namespace Phoenix.Controllers
         }
 
         [HttpGet]
-        public async Task<string> Get()
+        public async Task<IEnumerable<Employee>> Get()
         {
             var employees = await _service.GetAllByCompanyId(new Guid(this.Request.Headers["CompanyId"]));
-            return employees.FirstOrDefault()?.FirstName;
+            return employees;
         }
 
         [HttpPost]
         public void Post(Employee employee)
         {
-           _service.Create(employee);
+            employee.CompanyId = new Guid(this.Request.Headers["CompanyId"]);
+            _service.Create(employee);
         }
     }
 }
