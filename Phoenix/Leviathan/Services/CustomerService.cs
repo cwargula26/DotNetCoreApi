@@ -71,8 +71,6 @@ namespace Phoenix.Leviathan.Services
                 {
                     var customerJson = await response.Content.ReadAsStringAsync();
                     
-                    // TODO: Determine which employee collection to return
-                    // TODO: Need to update local repo from remote source
                     var customers = JsonSerializer.Deserialize<IEnumerable<LeviathanEmployeeModel>>(customerJson);
                     return _mapper.Map<IEnumerable<Customer>>(customers);
                 }
@@ -82,7 +80,7 @@ namespace Phoenix.Leviathan.Services
                     return repoCustomers;
                 }        
             }
-            catch(Exception ex)
+            catch(Exception)
             {
                 // TODO: Error Handling
                 return repoCustomers;

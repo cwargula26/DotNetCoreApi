@@ -2,6 +2,6 @@ namespace Phoenix.Leviathan.Models
 {
     public class LeviathanOrderGetModel : LeviathanOrderBaseModel
     {
-        public decimal cartTotal { get; set; }
+        public string cartTotal { get; set; }
     }
 }

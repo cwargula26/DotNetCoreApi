@@ -5,7 +5,7 @@ namespace Phoenix.Models
     public class Order : BaseModel
     {
         [Required]
-        public string CustomerId { get; set; }
+        public System.Guid CustomerId { get; set; }
 
         public int Id { get; set; }
 

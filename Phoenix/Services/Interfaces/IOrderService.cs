@@ -7,7 +7,7 @@ namespace Phoenix.Services.Interfaces
     public interface IOrderService
     {
         // QUESTION: Should this be on the Customer Service?
-        Task<IEnumerable<Order>> GetByCustomer(string customerId);
+        Task<IEnumerable<Order>> GetByCustomer(System.Guid customerId);
 
         Task Create (Order order);
         

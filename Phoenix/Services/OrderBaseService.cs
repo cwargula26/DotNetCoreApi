@@ -21,7 +21,7 @@ namespace Phoenix.Services
             await _orderRepo.Create(order);
         }
 
-        public virtual async Task<IEnumerable<Order>> GetByCustomer(string customerId)
+        public virtual async Task<IEnumerable<Order>> GetByCustomer(System.Guid customerId)
         {
             return await _orderRepo.GetByCustomerId(customerId);
         }

@@ -30,5 +30,12 @@ namespace Phoenix.Controllers
             order.CompanyId = new Guid(this.Request.Headers["CompanyId"]);
             await _service.Create(order);
         }
+
+        [HttpGet]
+        [Route("{customerId}")]
+        public async Task<IEnumerable<Order>> Get(string customerId)
+        {
+            return await _service.GetByCustomer(new Guid(customerId));
+        }
     }
 }

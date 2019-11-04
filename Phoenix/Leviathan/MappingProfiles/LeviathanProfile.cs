@@ -36,7 +36,7 @@ namespace Phoenix.Leviathan.MappingProfiles
                 .ForMember(dest => dest.CustomerId, opt => opt.MapFrom(src => src.customerId))
                 .ForMember(dest => dest.Products, opt => opt.MapFrom(src => src.Products))
                 .ForMember(dest => dest.CashierId, opt => opt.MapFrom(src => src.cashierId))
-                .ForMember(dest => dest.CartTotal, opt => opt.MapFrom(src => src.cartTotal));
+                .ForMember(dest => dest.CartTotal, opt => opt.MapFrom(src => System.Decimal.Parse(src.cartTotal)));
         }
     }
 }

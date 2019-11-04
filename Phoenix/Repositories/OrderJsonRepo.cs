@@ -23,9 +23,8 @@ namespace Phoenix.Repositories
             }
         }
 
-        public async Task<IEnumerable<Order>> GetByCustomerId(string customerId)
+        public async Task<IEnumerable<Order>> GetByCustomerId(System.Guid customerId)
         {
-            // TODO: Left this as async because if this were pulling from an actual DB I'd await that method
             return _orders?.Where(e => e.CustomerId == customerId);
         }
 

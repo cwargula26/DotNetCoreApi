@@ -80,7 +80,7 @@ namespace Phoenix.Leviathan.Services
                     return repoEmployees;
                 }        
             }
-            catch(Exception ex)
+            catch(Exception)
             {
                 // TODO: Error Handling
                 return repoEmployees;

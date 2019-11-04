@@ -50,9 +50,38 @@ namespace Phoenix.Leviathan.Services
             }
         }
 
-        public async Task<IEnumerable<Order>> GetByCustomer(string customerId)
+        public async override Task<IEnumerable<Order>> GetByCustomer(System.Guid customerId)
         {
-            throw new NotImplementedException();
+            var repoOrders = await base.GetByCustomer(customerId);
+
+                        try
+            {
+                var url = string.Format("{0}/{1}?ApiUser={2}&ApiKey={3}", _orderUrl, customerId, _appSettings.LeviathanApiUser, _appSettings.LeviathanApiKey);
+                var request = new HttpRequestMessage(HttpMethod.Get, url);
+
+                var client = _clientFactory.CreateClient();
+                var response = await client.SendAsync(request);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var orderJson = await response.Content.ReadAsStringAsync();
+                    
+                    // TODO: Determine which order collection to return
+                    // TODO: Need to update local repo from remote source
+                    var orders = JsonSerializer.Deserialize<IEnumerable<LeviathanOrderGetModel>>(orderJson);
+                    return _mapper.Map<IEnumerable<Order>>(orders);
+                }
+                else
+                {
+                    // TODO: Error handling
+                    return repoOrders;
+                }        
+            }
+            catch(Exception ex)
+            {
+                // TODO: Error Handling
+                return repoOrders;
+            }
         }
     }
 }
