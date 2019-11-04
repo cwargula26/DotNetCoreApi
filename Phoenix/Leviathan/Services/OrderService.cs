@@ -33,7 +33,7 @@ namespace Phoenix.Leviathan.Services
         {
             await base.Create(order);
 
-            var orderCreate = _mapper.Map<LeviathanOrderBaseModel>(order);
+            var orderCreate = _mapper.Map<LeviathanOrderCreateModel>(order);
             var createOrderJson = JsonSerializer.Serialize(orderCreate);
             var request = new HttpRequestMessage(HttpMethod.Post, _orderUrl);
 
