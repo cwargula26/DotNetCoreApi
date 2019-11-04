@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Phoenix.Models;
 
 namespace Phoenix.Services.Interfaces
@@ -6,9 +7,9 @@ namespace Phoenix.Services.Interfaces
     public interface IOrderService
     {
         // QUESTION: Should this be on the Customer Service?
-        IEnumerable<Order> GetByCustomer(System.Guid customerId);
+        Task<IEnumerable<Order>> GetByCustomer(string customerId);
 
-        void Create (Order order);
+        Task Create (Order order);
         
     }
 }

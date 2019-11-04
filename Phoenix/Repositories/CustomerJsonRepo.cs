@@ -11,7 +11,7 @@ namespace Phoenix.Repositories
     public class CustomerJsonRepo : ICustomerRepo
     {
         private List<Customer> _customers;
-        private const string _customerFilePath = @"C:\temp\employees.json";
+        private const string _customerFilePath = @"C:\temp\customers.json";
 
         public CustomerJsonRepo()
         {

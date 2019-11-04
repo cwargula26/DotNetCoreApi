@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Phoenix.Models;
 using Phoenix.Services.Interfaces;
 using Phoenix.Repositories.Interfaces;
+using System.Threading.Tasks;
 
 namespace Phoenix.Services
 {
@@ -15,14 +16,14 @@ namespace Phoenix.Services
             _orderRepo = orderRepo;
         }
 
-        public void Create(Order order)
+        public virtual async Task Create(Order order)
         {
-            _orderRepo.Create(order);
+            await _orderRepo.Create(order);
         }
 
-        public IEnumerable<Order> GetByCustomer(Guid customerId)
+        public virtual async Task<IEnumerable<Order>> GetByCustomer(string customerId)
         {
-            return _orderRepo.Get(customerId);
+            return await _orderRepo.GetByCustomerId(customerId);
         }
     }
 

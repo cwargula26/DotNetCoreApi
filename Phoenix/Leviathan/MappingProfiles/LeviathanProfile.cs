@@ -24,6 +24,19 @@ namespace Phoenix.Leviathan.MappingProfiles
                 .ForMember(dest => dest.Address, opt => opt.MapFrom(src => src.Address))
                 .ForMember(dest => dest.EmployeeId, opt => opt.MapFrom(src => src.employid))
                 .ReverseMap();
+
+            // Order Map
+            CreateMap<Order, LeviathanOrderCreateModel>()
+                .ForMember(dest => dest.customerId, opt => opt.MapFrom(src => src.CustomerId))
+                .ForMember(dest => dest.Products, opt => opt.MapFrom(src => src.Products))
+                .ForMember(dest => dest.cashierId, opt => opt.MapFrom(src => src.CashierId))
+                .ForMember(dest => dest.cartTotal, opt => opt.MapFrom(src => src.CartTotal.ToString()));
+
+            CreateMap<LeviathanOrderGetModel, Order>()
+                .ForMember(dest => dest.CustomerId, opt => opt.MapFrom(src => src.customerId))
+                .ForMember(dest => dest.Products, opt => opt.MapFrom(src => src.Products))
+                .ForMember(dest => dest.CashierId, opt => opt.MapFrom(src => src.cashierId))
+                .ForMember(dest => dest.CartTotal, opt => opt.MapFrom(src => src.cartTotal));
         }
     }
 }
