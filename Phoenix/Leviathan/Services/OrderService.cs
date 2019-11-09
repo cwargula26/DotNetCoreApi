@@ -54,7 +54,7 @@ namespace Phoenix.Leviathan.Services
         {
             var repoOrders = await base.GetByCustomer(customerId);
 
-                        try
+            try
             {
                 var url = string.Format("{0}/{1}?ApiUser={2}&ApiKey={3}", _orderUrl, customerId, _appSettings.LeviathanApiUser, _appSettings.LeviathanApiKey);
                 var request = new HttpRequestMessage(HttpMethod.Get, url);
@@ -77,7 +77,7 @@ namespace Phoenix.Leviathan.Services
                     return repoOrders;
                 }        
             }
-            catch(Exception ex)
+            catch(Exception)
             {
                 // TODO: Error Handling
                 return repoOrders;

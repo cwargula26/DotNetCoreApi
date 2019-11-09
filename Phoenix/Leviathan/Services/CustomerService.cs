@@ -71,7 +71,7 @@ namespace Phoenix.Leviathan.Services
                 {
                     var customerJson = await response.Content.ReadAsStringAsync();
                     
-                    var customers = JsonSerializer.Deserialize<IEnumerable<LeviathanEmployeeModel>>(customerJson);
+                    var customers = JsonSerializer.Deserialize<IEnumerable<LeviathanCustomerModel>>(customerJson);
                     return _mapper.Map<IEnumerable<Customer>>(customers);
                 }
                 else

@@ -2,6 +2,7 @@ namespace Phoenix.Leviathan.Models
 {
     public class LeviathanOrderGetModel : LeviathanOrderBaseModel
     {
-        public string cartTotal { get; set; }
+        // Accepts both strings and numbers
+        public object cartTotal { get; set; }
     }
 }
