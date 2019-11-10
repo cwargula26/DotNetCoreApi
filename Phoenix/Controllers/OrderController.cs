@@ -10,10 +10,7 @@ using Phoenix.Services.Interfaces;
 
 namespace Phoenix.Controllers
 {
-    [ApiController]
-    [Route("[controller]")]
-    [ServiceFilter(typeof(PheonixAuthFilter))]
-    public class OrderController : ControllerBase
+    public class OrderController : PhoenixBaseController
     {
         private readonly ILogger<OrderController> _logger;
         private readonly IOrderService _service;

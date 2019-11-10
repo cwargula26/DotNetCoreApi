@@ -10,6 +10,8 @@ using AutoMapper;
 using Phoenix.Leviathan.Models;
 using System.Text.Json;
 using System.Text;
+using System.Net;
+using Phoenix.Exceptions;
 
 namespace Phoenix.Leviathan.Services
 {
@@ -31,22 +33,38 @@ namespace Phoenix.Leviathan.Services
 
         public async override Task Create(Order order)
         {
-            await base.Create(order);
-
             var orderCreate = _mapper.Map<LeviathanOrderCreateModel>(order);
             var createOrderJson = JsonSerializer.Serialize(orderCreate);
-            var request = new HttpRequestMessage(HttpMethod.Post, _orderUrl);
 
-            var client = _clientFactory.CreateClient();
-            var response = await client.PostAsync(_orderUrl, new StringContent(createOrderJson, Encoding.UTF8, "application/json"));
-
-            if (response.IsSuccessStatusCode)
+            try
             {
-                // TODO: Update local version to represent that it's beens synced
-            }        
-            else
+                var request = new HttpRequestMessage(HttpMethod.Post, _orderUrl);
+
+                var client = _clientFactory.CreateClient();
+                var response = await client.PostAsync(_orderUrl, new StringContent(createOrderJson, Encoding.UTF8, "application/json"));
+
+                if (response.IsSuccessStatusCode)
+                {
+                    // TODO: Update local version to represent that it's beens synced
+                    order.IsSynced = true;
+                    await base.Create(order);
+                }        
+                // There are probably other StatusCodes to watch for where we would want to save locally
+                else if(response.StatusCode == HttpStatusCode.GatewayTimeout)
+                {
+                    await base.Create(order);
+                }
+                else
+                {
+                    // TODO: Error handling
+                    string errorMessage = await response.Content.ReadAsStringAsync();
+                    throw new ApiException(errorMessage, (int)response.StatusCode);
+                }
+            }
+            catch(Exception)
             {
                 // TODO: Error handling
+                await base.Create(order);
             }
         }
 

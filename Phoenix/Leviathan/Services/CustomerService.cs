@@ -11,6 +11,8 @@ using System.Net.Http;
 using System.Text.Json;
 using Phoenix.Leviathan.Models;
 using System.Text;
+using Phoenix.Exceptions;
+using System.Net;
 
 namespace Phoenix.Leviathan.Services
 {
@@ -35,23 +37,39 @@ namespace Phoenix.Leviathan.Services
 
         public async override Task Create(Customer customer)
         {
-            await base.Create(customer);
 
             var createCustomer = _mapper.Map<LeviathanCustomerModel>(customer);
             var createCustomerJson = JsonSerializer.Serialize(createCustomer);
 
-            var request = new HttpRequestMessage(HttpMethod.Post, _customerUrl);
-
-            var client = _clientFactory.CreateClient();
-            var response = await client.PostAsync(_customerUrl, new StringContent(createCustomerJson, Encoding.UTF8, "application/json"));
-
-            if (response.IsSuccessStatusCode)
+            try
             {
-                // TODO: Update local version to represent that it's beens synced and get the ID from the response
-            }        
-            else
+                var request = new HttpRequestMessage(HttpMethod.Post, _customerUrl);
+
+                var client = _clientFactory.CreateClient();
+                var response = await client.PostAsync(_customerUrl, new StringContent(createCustomerJson, Encoding.UTF8, "application/json"));
+
+                if (response.IsSuccessStatusCode)
+                {
+                    // only save locally if the API was successful
+                    customer.IsSynced = true;
+                    await base.Create(customer);
+                }        
+                // There are probably other StatusCodes to watch for where we would want to save locally
+                else if(response.StatusCode == HttpStatusCode.GatewayTimeout)
+                {
+                    await base.Create(customer);
+                }
+                else
+                {
+                    // TODO: Error handling
+                    string errorMessage = await response.Content.ReadAsStringAsync();
+                    throw new ApiException(errorMessage, (int)response.StatusCode);
+                }
+            }
+            catch(Exception)
             {
-                // TODO: Error handling
+                // TODO: error handling
+                await base.Create(customer);
             }
         }
 

@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace Phoenix.Filters
 {
-    public class PheonixAuthFilter : ActionFilterAttribute
+    public class PhoenixAuthFilter : ActionFilterAttribute
     {
         public override void OnActionExecuting(ActionExecutingContext context)
         {

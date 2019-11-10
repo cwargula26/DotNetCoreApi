@@ -10,6 +10,8 @@ using Microsoft.Extensions.Options;
 using AutoMapper;
 using Phoenix.Leviathan.Models;
 using System.Text;
+using System.Net;
+using Phoenix.Exceptions;
 
 namespace Phoenix.Leviathan.Services
 {
@@ -31,25 +33,38 @@ namespace Phoenix.Leviathan.Services
 
         public async override Task Create(Employee employee)
         {
-            await base.Create(employee);
-
             var createEmp = _mapper.Map<LeviathanEmployeeModel>(employee);
             var createEmpJson = JsonSerializer.Serialize(createEmp);
 
-            var request = new HttpRequestMessage(HttpMethod.Post, _employeeUrl);
-
-            var client = _clientFactory.CreateClient();
-            var response = await client.PostAsync(_employeeUrl, new StringContent(createEmpJson, Encoding.UTF8, "application/json"));
-
-            if (response.IsSuccessStatusCode)
+            try
             {
-                // TODO: Update local version to represent that it's beens synced
-            }        
-            else
-            {
-                // TODO: Error handling
+                var request = new HttpRequestMessage(HttpMethod.Post, _employeeUrl);
+
+                var client = _clientFactory.CreateClient();
+                var response = await client.PostAsync(_employeeUrl, new StringContent(createEmpJson, Encoding.UTF8, "application/json"));
+
+                if (response.IsSuccessStatusCode)
+                {
+                    employee.IsSynced = true;
+                    await base.Create(employee);
+                }        
+                // There are probably other StatusCodes to watch for where we would want to save locally
+                else if(response.StatusCode == HttpStatusCode.GatewayTimeout)
+                {
+                    await base.Create(employee);
+                }
+                else
+                {
+                    // TODO: Error handling
+                    string errorMessage = await response.Content.ReadAsStringAsync();
+                    throw new ApiException(errorMessage, (int)response.StatusCode);
+                }
             }
-
+            catch(Exception)
+            {
+                // TOOD: Error Handling
+                await base.Create(employee);
+            }
         }
 
         public async override Task<IEnumerable<Employee>> GetAllByCompanyId(Guid companyId)

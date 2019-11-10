@@ -10,10 +10,7 @@ using Phoenix.Filters;
 
 namespace Phoenix.Controllers
 {
-    [ApiController]
-    [Route("[controller]")]
-    [ServiceFilter(typeof(PheonixAuthFilter))]
-    public class EmployeeController : ControllerBase
+    public class EmployeeController : PhoenixBaseController
     {
         private readonly ILogger<EmployeeController> _logger;
         private readonly IEmployeeService _service;

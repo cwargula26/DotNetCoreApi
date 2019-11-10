@@ -39,7 +39,8 @@ namespace Phoenix
             services.AddSingleton<IEmployeeService, EmployeeService>();
             services.AddSingleton<ICustomerService, CustomerService>();
             services.AddSingleton<IOrderService, OrderService>();
-            services.AddScoped<PheonixAuthFilter>();
+            services.AddScoped<PhoenixAuthFilter>();
+            services.AddScoped<PhoenixExceptionFilter>();
             services.AddHttpClient();
             
             var appSettings = Configuration.GetSection("AppSettings");

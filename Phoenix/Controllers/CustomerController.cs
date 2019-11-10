@@ -10,10 +10,7 @@ using Phoenix.Filters;
 
 namespace Phoenix.Controllers
 {
-    [ApiController]
-    [Route("[controller]")]
-    [ServiceFilter(typeof(PheonixAuthFilter))]
-    public class CustomerController : ControllerBase
+    public class CustomerController : PhoenixBaseController
     {
         private readonly ILogger<CustomerController> _logger;
         private readonly ICustomerService _service;
@@ -25,16 +22,17 @@ namespace Phoenix.Controllers
         }
 
         [HttpPost]
-        public async Task Create(Customer customer)
+        public async Task<IActionResult> Create(Customer customer)
         {
             customer.CompanyId = new Guid(this.Request.Headers["CompanyId"]);
             await _service.Create(customer);
+            return Ok();
         }
 
         [HttpGet]
-        public async Task<IEnumerable<Customer>> GetAllByCustomer()
+        public async Task<IActionResult> GetAllByCustomer()
         {
-            return await _service.GetAll(new Guid(this.Request.Headers["CompanyId"]));
+            return Ok(await _service.GetAll(new Guid(this.Request.Headers["CompanyId"])));
         }
     }
 }
